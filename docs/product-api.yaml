@@ -1,0 +1,158 @@
+openapi: "3.0.3"
+info:
+  title: Product API
+  description: Documentation for model product API
+  version: "1.0.0"
+servers:
+  - url: https://localhost:8000
+components:
+  schemas:
+    ProductResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        stock:
+          type: integer
+        price:
+          type: number
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+  responses:
+    BadRequest:
+      description: Bad Request - Validation Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            errors:
+              name: [The name field is required]
+              price: [The price must be number]
+    NotFound:
+      description: Data Not Found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          example:
+            errors:
+              message: [Data not found]
+paths:
+  /api/products:
+    post:
+      summary: Create product
+      tags:
+        - Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - stock
+                - price
+              properties:
+                name:
+                  type: string
+                stock:
+                  type: integer
+                price:
+                  type: number
+      responses:
+        "201":
+          description: Product created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/ProductResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+    get:
+      summary: Get all products
+      tags:
+        - Product
+      responses:
+        "200":
+          description: Products fetched successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ProductResponse"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /api/products/{id}:
+    get:
+      summary: Get product
+      tags:
+        - Product
+      responses:
+        "200":
+          description: Product fetched successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/ProductResponse"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    put:
+      summary: Update product
+      tags:
+        - Product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                stock:
+                  type: integer
+                price:
+                  type: number
+      responses:
+        "200":
+          description: Product updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/ProductResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+    delete:
+      summary: Delete product
+      tags:
+        - Product
+      responses:
+        "200":
+          description: Product deleted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: boolean
+        "404":
+          $ref: "#/components/responses/NotFound"
