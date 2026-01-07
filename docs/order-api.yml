@@ -1,0 +1,61 @@
+openapi: "3.0.3"
+info:
+  title: Order API
+  version: "1.0.0"
+servers:
+  - url: https://localhost:8000
+paths:
+  /api/orders:
+    post:
+      tags:
+        - Order
+      summary: Create order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - cart
+              properties:
+                cart:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      product_id:
+                        type: integer
+                      quantity:
+                        type: integer
+                  example:
+                    - product_id: 1
+                      quantity: 5
+                    - product_id: 2
+                      quantity: 3
+      responses:
+        "201":
+          description: Order created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      cart:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            product_id:
+                              type: integer
+                            quantity:
+                              type: integer
+                        example:
+                          - product_id: 1
+                            quantity: 5
+                          - product_id: 2
+                            quantity: 3
