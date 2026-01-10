@@ -18,7 +18,7 @@ class OrderServiceImpl implements OrderService
             DB::statement('SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;');
             $product = Product::find($orderData['product_id']);
             $orderData['total_price'] = $product->price * $orderData['quantity'];
-            Log::info($product->stock . '<-Stock - Quantity-> ' . $orderData['quantity']);
+            // Log::info($product->stock . '<-Stock - Quantity-> ' . $orderData['quantity']);
 
             if ($product->stock < $orderData['quantity']) {
                 throw new HttpResponseException(response([
@@ -29,7 +29,7 @@ class OrderServiceImpl implements OrderService
             } else {
                 $product->update(['stock' => ($product->stock - $orderData['quantity'])]);
                 $order = Order::create($orderData);
-                Log::info('Order:' . $order);
+                // Log::info('Order:' . $order);
 
                 // Simulasi call external api (Laravel queue)
                 FakeExternalAPICall::dispatch($order);

@@ -61,7 +61,7 @@ class ProductController extends Controller
     {
         $products = $this->productService->getList();
 
-        Log::info($products);
+        // Log::info($products);
 
         $this->handleNotFound($products->all());
         return new ProductCollection($products);

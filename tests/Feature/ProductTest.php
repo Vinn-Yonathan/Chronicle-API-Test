@@ -23,9 +23,6 @@ class ProductTest extends TestCase
         DB::delete('delete from products');
     }
 
-    /**
-     * A basic feature test example.
-     */
     public function testAddProductSuccess(): void
     {
         $response = $this->post('/api/products', [
@@ -74,6 +71,25 @@ class ProductTest extends TestCase
             ]
         ]);
     }
+
+    public function testGetProductCache(): void
+    {
+        $this->seed([ProductSeeder::class]);
+        $product = Product::first();
+
+        $response = $this->get('/api/products/' . $product->id);
+        $response = $this->get('/api/products/' . $product->id);
+
+        $response->assertStatus(200)->assertJson([
+            'data' => [
+                'id' => $product->id,
+                'name' => 'Buku 1',
+                'stock' => 10,
+                'price' => 5000,
+            ]
+        ]);
+    }
+
     public function testGetProductNotFound(): void
     {
         $this->seed([ProductSeeder::class]);
@@ -92,10 +108,11 @@ class ProductTest extends TestCase
         $this->seed([ProductSeeder::class]);
 
         $response = $this->get('/api/products')->assertStatus(200)->json();
-        Log::info(json_encode($response, JSON_PRETTY_PRINT));
+        // Log::info(json_encode($response, JSON_PRETTY_PRINT));
 
         $this->assertCount(5, $response['data']);
     }
+
     public function testGetProductListNotFound(): void
     {
 
@@ -159,14 +176,14 @@ class ProductTest extends TestCase
         $this->seed(ProductSeeder::class);
         $product = Product::first();
         $response = $this->delete('/api/products/' . $product->id);
-        Log::info($product);
+        // Log::info($product);
 
         $response->assertStatus(200)->assertJson([
             'data' => true
         ]);
 
         $deletedProduct = Product::withTrashed()->find($product->id);
-        Log::info($deletedProduct);
+        // Log::info($deletedProduct);
         $this->assertNotNull($deletedProduct->deleted_at);
     }
     public function testDeleteProductNotFound(): void

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['name', 'stock', 'price'];
+    protected $fillable = ['id', 'name', 'stock', 'price'];
 
     protected $table = 'products';
     protected $primaryKey = 'id';
