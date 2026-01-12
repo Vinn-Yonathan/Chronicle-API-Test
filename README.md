@@ -23,6 +23,6 @@ Laravel Sail is used for this project to automaticaly setup Laravel project on D
 1. Download/clone the project from GitHub.
 2. Make sure you have _composer_ installed on your computer, open the project and type `composer install` on the terminal to install the required dependencies.
 3. Make `.env` file by copy paste `.env.example` file in the directory.
-4. Run the Docker Engine and run Docker containers using `/vendor/bin/sail up` command in your project terminal (Windows: must be on wsl2). By running that command, Laravel Sail will run `docker-compose up` in the background.
-5. Run `/vendor/bin/sail artisan migrate` command to prepare the database for the project.
+4. Run the Docker Engine and run Docker containers using `vendor/bin/sail up` command in your project terminal (Windows: must be on wsl2). By running that command, Laravel Sail will run `docker-compose up` in the background.
+5. Run `vendor/bin/sail artisan migrate` command to prepare the database for the project.
 6. From this point, the API already can be used. This project uses laravel queue on the API. Therefore, before using it with postman, etc, make sure to run `vendor/bin/sail artisan queue:work` on the terminal to make sure the worker will do the job on the queue.
